@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    <link rel="shortcut icon" href="Public/Favicon.png" type="image/x-icon">
+    <title>Rachana Dahal</title>
+</head>
+<body>
+    <div class="hero-background" aria-hidden="true"></div>
+    <div id="youtube-player-container" style="display: none;"></div>
+    <header class="site-header">
+        <a class="logo-placeholder" href="#" aria-label="Home"><img src="Public/Favicon.png" alt="Rachana home"></a>
+        <nav aria-label="Main navigation"><a href="#about">About</a><a href="#events">Events</a><a href="#merch">Merch</a></nav>
+        <button class="menu-button" type="button" aria-label="Open menu"><span class="cat-window"><img src="Orange%20Cat%20Peeping.svg" alt=""></span></button>
+    </header>
+    <aside class="album-stack" aria-label="Featured records">
+        <div class="album-card" id="solos" data-album="Featured">
+            <span class="album-cover" data-cover="Featured" draggable="false">Featured<br><small>Songs</small></span>
+            <span class="album-disc" draggable="true" aria-label="Drag Featured vinyl"></span>
+        </div>
+                </div>
+                <div class="album-card active-album" id="album2" data-album="album2">
+            <span class="album-cover" data-cover="album2" draggable="false">ALBUM 2<br><small>COVER</small></span>
+            <span class="album-disc" draggable="true" aria-label="Drag Album 2 vinyl"></span>
+        </div>
+        <div class="album-card active-album" id="album1" data-album="album1">
+            <span class="album-cover" data-cover="album1" draggable="false">ALBUM 1<br><small>COVER</small></span>
+            <span class="album-disc is-loaded" draggable="true" aria-label="Drag Album 1 vinyl"></span>
+        </div>
+    </aside>
+    <aside class="social-rail" aria-label="Social links">
+        <a href="https://www.youtube.com/@rachana_dahal" target="_blank" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z" /></svg></a>
+        <a href="https://www.instagram.com/rachana_dahal" target="_blank" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" class="social-dot" /></svg></a>
+        <a href="https://www.tiktok.com/@rachana_meow" target="_blank" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.7 3c.3 1.8 1.4 3.1 3.3 3.5v3.1c-1.4 0-2.6-.4-3.7-1.1v6.4a5.5 5.5 0 1 1-4.8-5.4v3.2a2.4 2.4 0 1 0 1.7 2.3V3h3.5Z" /></svg></a>
+        <a href="https://open.spotify.com/artist/7rEwUNVg5AYcD1MTlRJ5aj" target="_blank" aria-label="Spotify" title="Spotify"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M7.2 9.5c3.3-1 7.3-.7 10.1.8M7.8 12.4c2.8-.7 6.2-.5 8.7.7M8.8 15.1c2.1-.4 4.5-.2 6.4.5" class="social-line" /></svg></a>
+    </aside>
+    <main class="player-shell">
+        <div class="queue-panel" id="queuePanel" aria-label="Current album tracks" hidden>
+            <p class="queue-heading" id="queueHeading">Janmadaag</p>
+            <ol id="queueList"></ol>
+        </div>
+        <div class="turntable-player" id="turntableDropZone" aria-label="Vinyl record player">
+            <svg class="turntable" viewBox="0 0 720 540" role="img" aria-labelledby="player-title player-desc">
+                <title id="player-title">Illustrated mint vinyl record player</title>
+                <desc id="player-desc">A pastel turntable with a spinning record and interactive tonearm.</desc>
+                <defs>
+                    <linearGradient id="deck" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#fffdf9" />
+                        <stop offset="1" stop-color="#e9e4dc" />
+                    </linearGradient>
+                    <linearGradient id="deck-side" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#b1d3cb" />
+                        <stop offset="1" stop-color="#79aaa4" />
+                    </linearGradient>
+                    <radialGradient id="record" cx="45%" cy="35%">
+                        <stop offset="0" stop-color="#4e5262" />
+                        <stop offset="0.45" stop-color="#272b39" />
+                        <stop offset="1" stop-color="#11141d" />
+                    </radialGradient>
+                    <clipPath id="record-label-clip"><circle cx="310" cy="280" r="150" /></clipPath>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+                        <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#26342f" flood-opacity=".2" />
+                    </filter>
+                </defs>
+
+                <ellipse cx="363" cy="476" rx="279" ry="25" fill="#4b514c" opacity=".16" />
+                <g filter="url(#shadow)">
+                    <path d="M92 178h548v246c0 18-14 32-32 32H124c-18 0-32-14-32-32V178Z" fill="url(#deck-side)" />
+                    <rect x="76" y="151" width="580" height="270" rx="27" fill="url(#deck)" stroke="#d4d0c8" stroke-width="3" />
+                </g>
+
+                <g class="record-group" id="recordGroup">
+                    <circle cx="310" cy="280" r="165" fill="#d6e3df" />
+                    <circle cx="310" cy="280" r="153" fill="url(#record)" stroke="#20232d" stroke-width="3" />
+                    <g fill="none" stroke="#656978" stroke-opacity=".38">
+                        <circle cx="310" cy="280" r="139" />
+                        <circle cx="310" cy="280" r="124" />
+                        <circle cx="310" cy="280" r="106" />
+                        <circle cx="310" cy="280" r="87" />
+                    </g>
+                    <image id="recordArt" x="110" y="80" width="400" height="400" preserveAspectRatio="xMidYMid slice" clip-path="url(#record-label-clip)" />
+                    <circle cx="310" cy="280" r="7" fill="#fff8ed" />
+                    <circle cx="310" cy="280" r="3" fill="#303541" />
+                </g>
+
+                <g id="tonearm" class="tonearm" tabindex="0" role="button" aria-label="Play music" aria-pressed="false">
+                    <circle cx="554" cy="157" r="29" fill="#d2e3df" stroke="#8fb9b1" stroke-width="3" />
+                    <circle cx="554" cy="157" r="10" fill="#7ba49e" />
+                    <path d="M554 157L458 247" fill="none" stroke="#aeb8b3" stroke-width="13" stroke-linecap="round" />
+                    <path d="M554 157L458 247" fill="none" stroke="#fffdf9" stroke-width="7" stroke-linecap="round" />
+                    <path d="M458 247l-31 32 19 15 29-38Z" fill="#faf7ef" stroke="#aeb8b3" stroke-width="3" />
+                    <circle cx="439" cy="286" r="5" fill="#efb7a8" />
+                </g>
+
+                <g class="screw-details" fill="#c5c0b9">
+                    <circle cx="125" cy="388" r="5" /><circle cx="638" cy="388" r="5" />
+                </g>
+
+                <g class="svg-controls" aria-label="Player controls">
+                    <g id="shuffleButton" class="svg-control" tabindex="0" role="button" aria-label="Shuffle tracks" aria-pressed="false">
+                        <!-- <circle cx="130" cy="352" r="20" /> -->
+                        <!-- <path class="shuffle-icon" d="M120 346h3c7 0 7 12 15 12h3m-6-16 6 4-6 4m-15 4h3c2 0 3-1 4-3m8-5c1-2 2-3 5-3h3m-6-4 6 4-6 4" />
+                        <path class="loop-icon is-hidden" d="M119 352a11 11 0 0 1 18-8l3 3m0-5v7h-7m18 3a11 11 0 0 1-18 8l-3-3m0 5v-7h7" /> -->
+                    </g>
+                    <g id="prevButton" class="svg-control" tabindex="0" role="button" aria-label="Previous track">
+                        <circle cx="520" cy="352" r="20" />
+                        <path d="M527 342l-10 10 10 10v-20Zm-11 0v20" />
+                    </g>
+                    <g id="nextButton" class="svg-control" tabindex="0" role="button" aria-label="Next track">
+                        <circle cx="576" cy="352" r="20" />
+                        <path d="m569 342 10 10-10 10v-20Zm11 0v20" />
+                    </g>
+                    <g id="volumeControl" class="volume-svg-control" tabindex="0" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68">
+                        <text class="volume-mark volume-up" x="640" y="315">+</text>
+                        <rect x="631" y="326" width="18" height="78" rx="9" class="volume-track" />
+                        <line x1="640" y1="395" x2="640" y2="342" class="volume-level" />
+                        <circle id="volumeKnob" cx="640" cy="342" r="8" />
+                        <text class="volume-mark volume-down" x="640" y="427">−</text>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <section class="turntable-card" aria-label="Now playing">
+            <div class="now-playing">
+                <div class="song-copy">
+                    <p>Aagya</p>
+                    <span>Rachana Dahal</span>
+                </div>
+                <button class="queue-icon" id="queueButton" type="button" aria-label="Show current album tracks" aria-expanded="false">≡♪</button>
+                <div class="progress-row">
+                    <span id="elapsedTime">0:00</span>
+                    <div class="progress" id="progressTrack" role="slider" aria-label="Seek through song" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progressBar"></i></div>
+                    <span id="trackDuration">5:15</span>
+                </div>
+                <p class="next-song" id="nextSongName">Next: Hey Bhagwan</p>
+            </div>
+        </section>
+    </main>
+    <section class="about-section" id="about" aria-labelledby="about-title">
+        <div class="about-panel">
+            <a class="about-close" href="#" aria-label="Close About">&times;</a>
+            <div class="about-intro">
+                <div>
+                    <p class="about-kicker">Singer / songwriter / composer</p>
+                    <h1 id="about-title">Rachana Dahal</h1>
+                    <p>Rachana Dahal is a Nepalese singer, songwriter, and composer whose indie rock and alternative music explores intense emotional subjects through rebellious, self-written songs.</p>
+                    <p class="about-source">Profile based on <a href="https://en.wikipedia.org/wiki/Rachana_Dahal" target="_blank" rel="noreferrer">Wikipedia</a>.</p>
+                </div>
+                <div class="about-image-grid" aria-label="Selected album artwork">
+                    <img src="https://yt3.googleusercontent.com/MGusxm1g3h3wUu471D7LrVrEXKrCz-Dj2BLWFYvnI5UIaotSV_SGWMfoWRNRCF8C7Tidt0Alsw=s1200" alt="Janmadaag album artwork">
+                    <img src="https://yt3.googleusercontent.com/0G3oEWjuqof8Ln5_ouEYnPnkk0qDfxR0KIbAItQYn_sVeCWcoWaomNkjScTBji-ABGROLb5g0oxmvAM=w544-h544-l90-rj" alt="Flim album artwork">
+                </div>
+            </div>
+            <div class="about-details">
+                <div>
+                    <p class="about-kicker">Albums & collections</p>
+                    <div class="album-list">
+                        <article><img src="https://yt3.googleusercontent.com/MGusxm1g3h3wUu471D7LrVrEXKrCz-Dj2BLWFYvnI5UIaotSV_SGWMfoWRNRCF8C7Tidt0Alsw=s1200" alt=""><span>Janmadaag</span></article>
+                        <article><img src="https://yt3.googleusercontent.com/0G3oEWjuqof8Ln5_ouEYnPnkk0qDfxR0KIbAItQYn_sVeCWcoWaomNkjScTBji-ABGROLb5g0oxmvAM=w544-h544-l90-rj" alt=""><span>Flim</span></article>
+                        <article><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsn24D5waKpd1_g6jyTCatMDcCd0jBv-5B8nxBU0DZWw&s=10" alt=""><span>Features</span></article>
+                    </div>
+                </div>
+                <div>
+                    <p class="about-kicker">Selected songs</p>
+                    <ul class="song-list">
+                        <li><span>2019</span>Bhumari</li>
+                        <li><span>2019</span>Soch</li>
+                        <li><span>2020</span>Sapanako Raja</li>
+                        <li><span>2020</span>Daagbatti</li>
+                        <li><span>2020</span>Hey Bhagawan</li>
+                        <li><span>2022</span>Aagya</li>
+                        <li><span>2024</span>Asambhav</li>
+                        <li><span>2024</span>Alagaav</li>
+                        <li><span>2024</span>Ma Sakdina</li>
+                        <li><span>2025</span>Timi Bhaye</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="coming-section" id="events" aria-labelledby="events-title">
+        <div class="coming-panel">
+            <a class="about-close" href="#" aria-label="Close Events">&times;</a>
+            <p class="about-kicker">Live / soon</p>
+            <h2 id="events-title">Events are coming</h2>
+            <p>New shows and live dates will appear here soon.</p>
+            <img class="coming-cat" src="Orange%20Cat%20Peeping.svg" alt="Orange cat peeking from the panel">
+        </div>
+    </section>
+    <section class="coming-section" id="merch" aria-labelledby="merch-title">
+        <div class="coming-panel">
+            <a class="about-close" href="#" aria-label="Close Merch">&times;</a>
+            <p class="about-kicker">Objects / wearables</p>
+            <h2 id="merch-title">Merch is coming</h2>
+            <p>Records, clothes, and small Rachana things are on the way.</p>
+            <img class="coming-cat" src="Orange%20Cat%20Peeping.svg" alt="Orange cat peeking from the panel">
+        </div>
+    </section>
+    <div id="playlistPlayer" class="playlist-player" aria-hidden="true"></div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let isPlaying = false;
+        let currentTrack = 0;
+        let currentAlbum = 'album1';
+        let youtubePlayer = null;
+        let youtubeReady = false;
+        let pendingPlay = false;
+        let progressInterval = null;
+        let isLoadingTrack = false;
+        let currentMode = 'cute'; // 'cute' or 'red'
+        let currentBgIndex = 0;
+        
+        // Background mode configurations
+        const backgroundModes = {
+            cute: {
+                catImage: 'Orange%20Cat%20Peeping.svg',
+                backgrounds: [
+                    { type: 'video', url: 'Hey%20Bhagwan.mp4' }
+                ]
+            },
+            red: {
+                catImage: 'blackcat.svg',
+                backgrounds: [
+                  { type: 'video', url: 'rachanared.mp4' }
+            ]
+            }
+        };
+        
+        const albums = {
+            album1: {
+                name: 'Janmadaag',
+                coverImage: 'https://yt3.googleusercontent.com/MGusxm1g3h3wUu471D7LrVrEXKrCz-Dj2BLWFYvnI5UIaotSV_SGWMfoWRNRCF8C7Tidt0Alsw=s1200',
+                playlistUrl: 'https://music.youtube.com/playlist?list=PLEVgEF2Rs05LA08AezbLyPyJBNnL46Kae',
+                tracks: [
+                    { title: 'Aagya', album: 'Janmadaag', duration: '5:16', videoId: 'FuWIaNfat58' },
+                    { title: 'Hey Bhagwan', album: 'Janmadaag', duration: '4:51', audioSrc: 'heybhagwan.mp3' , videoId:'wnBak_wnmNw'},
+                    { title: 'Timi Bhaye', album: 'Janmadaag', duration: '4:22', videoId: '9UoFPfU_KL8' },
+                    { title: 'Asambhav', album: 'Janmadaag', duration: '5:10', videoId: 'iess5HIlNSg' },
+                    { title: 'Ma Sakdina', album: 'Janmadaag', duration: '6:02', videoId: 'C7cobsauddQ' },
+                    { title: 'Soch', album: 'Janmadaag', duration: '3:29', videoId: 'MRFeB6XZPbQ' },
+                    { title: 'Alagaav', album: 'Janmadaag', duration: '4:09', videoId: '-WFJ2j6GLq8' },
+                    { title: 'Daagbatti', album: 'Janmadaag', duration: '4:13', videoId: 'rpTiqiu76HE' },
+                    { title: 'Sapanako Raja', album: 'Janmadaag', duration: '4:29', videoId: 'Nr7qlhd0OdQ' },
+                    { title: 'Brahmanda', album: 'Janmadaag', duration: '6:40', videoId: '3UWTGElzKEM' },
+                    { title: 'Bhumari', album: 'Janmadaag', duration: '4:15', videoId: 'ZMUMAeNqGgo' },
+                ]
+            },
+            album2: {
+                name: 'Flim',
+                coverImage: 'https://yt3.googleusercontent.com/0G3oEWjuqof8Ln5_ouEYnPnkk0qDfxR0KIbAItQYn_sVeCWcoWaomNkjScTBji-ABGROLb5g0oxmvAM=w544-h544-l90-rj',
+                playlistUrl: 'https://music.youtube.com/playlist?list=OLAK5uy_mtCRdL8DGuRiVUeaCIPnBTVZ9tchtLAVU',
+                tracks: [
+                    { title: 'Flim', album: 'Flim', duration: '5:47', videoId: 'kGCkfwM1idA' },
+                ]
+            },
+            Featured: {
+                name: 'Features',
+                coverImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsn24D5waKpd1_g6jyTCatMDcCd0jBv-5B8nxBU0DZWw&s=10',
+                playlistUrl: 'https://music.youtube.com/playlist?list=PLRjKEivFbyFY',
+                tracks: [
+                    { title: 'Birsera Timi', album: 'Monkey Temple', duration: '4:39', videoId: 'mSyrkig8TA8' },
+                    { title: 'SABAI LAI HATAAR CHHA', album: 'Balen', duration: '3:14', videoId: 'me6CmKK3Vdo' },
+                    { title: 'Kaagaj Ko Dhunga', album: 'Monkey Temple', duration: '4:45', videoId: 'qRxGahVGA9Q' },
+                  
+                ]
+            },
+
+        };
+        
+        let tracks = albums.album1.tracks;
+
+        const recordGroup = document.querySelector('#recordGroup');
+        const tonearm = document.querySelector('#tonearm');
+        const volumeControl = document.querySelector('#volumeControl');
+        const volumeLevel = document.querySelector('.volume-level');
+        const volumeKnob = document.querySelector('#volumeKnob');
+        const shuffleButton = document.querySelector('#shuffleButton');
+        const previousButton = document.querySelector('#prevButton');
+        const nextButton = document.querySelector('#nextButton');
+        const shuffleIcon = document.querySelector('.shuffle-icon');
+        const loopIcon = document.querySelector('.loop-icon');
+        const queueButton = document.querySelector('#queueButton');
+        const queuePanel = document.querySelector('#queuePanel');
+        const queueList = document.querySelector('#queueList');
+        const queueHeading = document.querySelector('#queueHeading');
+        const songTitle = document.querySelector('.song-copy p');
+        const albumTitle = document.querySelector('.song-copy span');
+        const trackDuration = document.querySelector('#trackDuration');
+        const nextSongName = document.querySelector('#nextSongName');
+        const elapsedTime = document.querySelector('#elapsedTime');
+        const progressBar = document.querySelector('#progressBar');
+        const progressTrack = document.querySelector('#progressTrack');
+        const turntableDropZone = document.querySelector('#turntableDropZone');
+        const albumCards = document.querySelectorAll('.album-card');
+        const albumDiscs = document.querySelectorAll('.album-disc');
+        const playlistPlayer = document.querySelector('#playlistPlayer');
+        const localAudio = new Audio();
+        const recordArt = document.querySelector('#recordArt');
+        let playlistLoaded = false;
+        let activePlaylistId = 'PLOe7AuU6KbNE';
+        let volume = 68;
+        let playbackMode = 0;
+        let shuffleActive = false;
+        const playerStorageKey = 'rdmusic-player-state';
+        let restoredPlaybackPosition = 0;
+        let restoredPlaybackState = false;
+
+        function readSavedPlayerState() {
+            try {
+                return JSON.parse(localStorage.getItem(playerStorageKey) || 'null');
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function restorePlayerState() {
+            const savedState = readSavedPlayerState();
+            if (!savedState) return;
+
+            if (savedState.album && albums[savedState.album]) currentAlbum = savedState.album;
+            tracks = albums[currentAlbum].tracks;
+            const playlistUrl = albums[currentAlbum].playlistUrl;
+            activePlaylistId = playlistUrl ? new URL(playlistUrl).searchParams.get('list') : '';
+            if (Array.isArray(savedState.trackOrder)) {
+                const orderedTracks = savedState.trackOrder
+                    .map(trackId => tracks.find(track => (track.videoId || track.title) === trackId))
+                    .filter(Boolean);
+                if (orderedTracks.length === tracks.length) tracks = orderedTracks;
+            }
+            if (savedState.trackId) {
+                const savedTrackIndex = tracks.findIndex(track => (track.videoId || track.title) === savedState.trackId);
+                if (savedTrackIndex >= 0) currentTrack = savedTrackIndex;
+            } else if (Number.isInteger(savedState.trackIndex)) {
+                currentTrack = Math.max(0, Math.min(savedState.trackIndex, tracks.length - 1));
+            }
+            if (savedState.mode && backgroundModes[savedState.mode]) currentMode = savedState.mode;
+            playbackMode = savedState.playbackMode === 1 ? 1 : 0;
+            shuffleActive = Boolean(savedState.shuffleActive);
+            restoredPlaybackPosition = Math.max(0, Number(savedState.position) || 0);
+            restoredPlaybackState = Boolean(savedState.isPlaying);
+        }
+
+        function updateActiveAlbumCard() {
+            albumCards.forEach(card => {
+                const isActive = card.dataset.album === currentAlbum;
+                card.classList.toggle('active-album', isActive);
+                const disc = card.querySelector('.album-disc');
+                if (disc) disc.classList.toggle('is-loaded', isActive);
+            });
+        }
+
+        function savePlayerState() {
+            let position = 0;
+            const track = tracks[currentTrack];
+            if (track && track.audioSrc) {
+                position = localAudio.currentTime || 0;
+            } else if (youtubeReady && youtubePlayer && typeof youtubePlayer.getCurrentTime === 'function') {
+                position = youtubePlayer.getCurrentTime() || 0;
+            }
+            localStorage.setItem(playerStorageKey, JSON.stringify({
+                album: currentAlbum,
+                trackId: track ? (track.videoId || track.title) : '',
+                trackIndex: currentTrack,
+                trackOrder: tracks.map(item => item.videoId || item.title),
+                mode: currentMode,
+                playbackMode,
+                shuffleActive,
+                position,
+                isPlaying
+            }));
+        }
+
+        localAudio.src = 'heybhagwan.mp3';
+        localAudio.preload = 'metadata';
+        localAudio.addEventListener('loadedmetadata', () => {
+            if (restoredPlaybackPosition > 0) localAudio.currentTime = restoredPlaybackPosition;
+            updatePlaybackProgress();
+            if (restoredPlaybackState) setPlaying(true);
+        });
+        localAudio.addEventListener('timeupdate', updatePlaybackProgress);
+        localAudio.addEventListener('ended', () => selectTrack(currentTrack + 1));
+        localAudio.addEventListener('error', () => console.error('Unable to load heybhagwan.mp3'));
+
+        function playlistEmbedUrl(playlistUrl) {
+            const playlistId = new URL(playlistUrl).searchParams.get('list');
+            return playlistId ? `https://www.youtube.com/embed?listType=playlist&list=${encodeURIComponent(playlistId)}&enablejsapi=1&autoplay=0&origin=${encodeURIComponent(location.origin)}` : '';
+        }
+
+        function sendPlaylistCommand(command) {
+            if (youtubeReady && youtubePlayer) {
+                if (command === 'playVideo' && !playlistLoaded) {
+                    youtubePlayer.loadPlaylist({ listType: 'playlist', list: activePlaylistId, index: currentTrack });
+                    playlistLoaded = true;
+                    youtubePlayer.playVideo();
+                    window.setTimeout(() => youtubePlayer.playVideo(), 150);
+                    return;
+                }
+                if (typeof youtubePlayer[command] === 'function') youtubePlayer[command]();
+                return;
+            }
+        }
+
+        function formatTime(seconds) {
+            const safeSeconds = Math.max(0, Math.floor(seconds || 0));
+            return `${Math.floor(safeSeconds / 60)}:${String(safeSeconds % 60).padStart(2, '0')}`;
+        }
+
+        function updatePlaybackProgress() {
+            const track = tracks[currentTrack];
+            if (track && track.audioSrc) {
+                const duration = localAudio.duration || 0;
+                const current = localAudio.currentTime || 0;
+                elapsedTime.textContent = formatTime(current);
+                trackDuration.textContent = formatTime(duration);
+                const percent = duration ? (current / duration) * 100 : 0;
+                progressBar.style.width = `${percent}%`;
+                progressTrack.setAttribute('aria-valuenow', String(Math.round(percent)));
+                return;
+            }
+            if (!youtubeReady || !youtubePlayer) return;
+            const current = youtubePlayer.getCurrentTime();
+            const duration = youtubePlayer.getDuration();
+            elapsedTime.textContent = formatTime(current);
+            trackDuration.textContent = formatTime(duration);
+            const percent = duration ? (current / duration) * 100 : 0;
+            progressBar.style.width = `${percent}%`;
+            progressTrack.setAttribute('aria-valuenow', String(Math.round(percent)));
+        }
+
+        function renderAlbumCovers() {
+            Object.entries(albums).forEach(([albumId, album]) => {
+                const cover = document.querySelector(`[data-cover="${albumId}"]`);
+                if (!cover || !album.coverImage) return;
+                cover.style.backgroundImage = `url("${album.coverImage}")`;
+                cover.classList.add('has-image');
+            });
+        }
+
+        function updateRecordArt(imageUrl) {
+            const track = tracks[currentTrack];
+            const album = albums[currentAlbum];
+            // Prioritize: custom imageUrl > song thumbnail > album coverImage
+            const thumbnail = imageUrl || (track && track.videoId ? `https://i.ytimg.com/vi/${track.videoId}/hqdefault.jpg` : '') || album.coverImage;
+            if (!thumbnail) return;
+            recordArt.setAttribute('href', thumbnail);
+            recordArt.setAttribute('xlink:href', thumbnail);
+        }
+
+        function updateBackground() {
+            const heroBackground = document.querySelector('.hero-background');
+            const mode = backgroundModes[currentMode];
+            const bg = mode.backgrounds[currentBgIndex];
+            
+            // Remove any existing video
+            const existingVideo = heroBackground.querySelector('video');
+            if (existingVideo) existingVideo.remove();
+            
+            if (bg.type === 'image') {
+                heroBackground.style.background = `url('${bg.url}') center / cover no-repeat`;
+            } else if (bg.type === 'video') {
+                heroBackground.style.background = 'transparent';
+                const video = document.createElement('video');
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = isPlaying; // Mute if player is playing, unmute if paused
+                video.playsInline = true;
+                video.style.cssText = 'position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;';
+                video.src = bg.url;
+                video.id = 'backgroundVideo'; // Add ID for easy access
+                heroBackground.appendChild(video);
+            }
+        }
+
+        function syncBackgroundAudio() {
+            const backgroundVideo = document.querySelector('#backgroundVideo');
+            if (backgroundVideo) {
+                backgroundVideo.muted = isPlaying; // Mute when player is playing, unmute when paused
+            }
+        }
+
+        function toggleMode() {
+            const prevMode = currentMode;
+            currentMode = currentMode === 'cute' ? 'red' : 'cute';
+            currentBgIndex = 0;
+            
+            // Check if the background changed
+            const prevBg = backgroundModes[prevMode].backgrounds[0];
+            const newBg = backgroundModes[currentMode].backgrounds[currentBgIndex];
+            
+            // Only update background if it actually changed
+            if (prevBg.url !== newBg.url || prevBg.type !== newBg.type) {
+                updateBackground();
+            }
+            
+            const catImg = document.querySelector('.cat-window img');
+            catImg.src = backgroundModes[currentMode].catImage;
+            
+            // Update favicon and header logo
+            const faviconLink = document.querySelector('link[rel="shortcut icon"]');
+            const headerLogo = document.querySelector('.logo-placeholder img');
+            const faviconPath = currentMode === 'cute' ? 'Public/Favicon.png' : 'Public/Faviconred.png';
+            
+            if (faviconLink) {
+                faviconLink.href = faviconPath;
+            }
+            if (headerLogo) {
+                headerLogo.src = faviconPath;
+            }
+            savePlayerState();
+        }
+
+        function nextBackground() {
+            const mode = backgroundModes[currentMode];
+            // Only cycle if there's more than one background
+            if (mode.backgrounds.length > 1) {
+                currentBgIndex = (currentBgIndex + 1) % mode.backgrounds.length;
+                updateBackground();
+            }
+        }
+
+        function renderQueue() {
+            queueList.replaceChildren();
+            tracks.forEach((track, index) => {
+                const item = document.createElement('li');
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.textContent = `${String(index + 1).padStart(2, '0')}  ${track.title}`;
+                button.classList.toggle('is-current', index === currentTrack);
+                button.addEventListener('click', () => selectTrack(index));
+                item.append(button);
+                queueList.append(item);
+            });
+        }
+
+        function loadAlbum(albumId) {
+            currentAlbum = albumId;
+            tracks = albums[albumId].tracks;
+            const playlistUrl = albums[albumId].playlistUrl;
+            activePlaylistId = playlistUrl ? new URL(playlistUrl).searchParams.get('list') : '';
+            updateActiveAlbumCard();
+            playlistLoaded = false;
+            currentTrack = 0;
+            const track = tracks[currentTrack];
+            songTitle.textContent = track.title;
+            albumTitle.textContent = track.album;
+            trackDuration.textContent = track.duration;
+            nextSongName.textContent = `Next: ${tracks[(currentTrack + 1) % tracks.length].title}`;
+            updateRecordArt();
+            updateQueueHeading();
+            renderQueue();
+            
+            // Load the YouTube video/playlist but don't auto-play
+            if (youtubeReady && youtubePlayer) {
+                if (track.videoId) {
+                    youtubePlayer.cueVideoById(track.videoId);
+                } else if (activePlaylistId) {
+                    youtubePlayer.cuePlaylist({ listType: 'playlist', list: activePlaylistId, index: currentTrack });
+                }
+            }
+            
+            setPlaying(false);
+            savePlayerState();
+        }
+
+        // Drag and drop functionality
+        albumDiscs.forEach(disc => {
+            disc.addEventListener('dragstart', (e) => {
+                const card = disc.closest('.album-card');
+                const dragGhost = document.createElement('span');
+                dragGhost.className = 'drag-ghost';
+                dragGhost.innerHTML = '<span></span>';
+                document.body.append(dragGhost);
+                e.dataTransfer.setData('text/plain', card.dataset.album);
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.setDragImage(dragGhost, 44, 44);
+                disc.classList.add('dragging');
+                window.setTimeout(() => dragGhost.remove(), 0);
+            });
+
+            disc.addEventListener('dragend', () => {
+                disc.classList.remove('dragging');
+            });
+        });
+
+        turntableDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            turntableDropZone.classList.add('drag-over');
+        });
+
+        turntableDropZone.addEventListener('dragleave', () => {
+            turntableDropZone.classList.remove('drag-over');
+        });
+
+        turntableDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            turntableDropZone.classList.remove('drag-over');
+            
+            const albumId = e.dataTransfer.getData('text/plain');
+            if (albumId && albums[albumId]) {
+                loadAlbum(albumId);
+                recordGroup.classList.remove('is-landing');
+                void recordGroup.offsetWidth;
+                recordGroup.classList.add('is-landing');
+                albumDiscs.forEach(disc => disc.classList.remove('is-loaded'));
+                albumCards.forEach(card => {
+                    const isActive = card.dataset.album === albumId;
+                    card.classList.toggle('active-album', isActive);
+                    if (isActive) card.querySelector('.album-disc').classList.add('is-loaded');
+                });
+                recordGroup.addEventListener('animationend', () => recordGroup.classList.remove('is-landing'), { once: true });
+            }
+        });
+
+        function selectTrack(index) {
+            currentTrack = (index + tracks.length) % tracks.length;
+            const track = tracks[currentTrack];
+            songTitle.textContent = track.title;
+            albumTitle.textContent = track.album;
+            trackDuration.textContent = track.duration;
+            nextSongName.textContent = `Next: ${tracks[(currentTrack + 1) % tracks.length].title}`;
+            updateRecordArt();
+            renderQueue();
+            
+            setPlaying(true);
+            savePlayerState();
+        }
+
+        function updateQueueHeading() {
+            if (queueHeading && albums[currentAlbum]) {
+                queueHeading.textContent = albums[currentAlbum].name;
+            }
+        }
+
+        function setPlaying(nextState) {
+            isPlaying = nextState;
+            const track = tracks[currentTrack];
+            if (track && track.audioSrc) {
+                pendingPlay = false;
+                isLoadingTrack = false;
+                if (youtubeReady && youtubePlayer) youtubePlayer.pauseVideo();
+                if (isPlaying) {
+                    localAudio.play().catch(error => console.error('Local audio playback error:', error));
+                } else {
+                    localAudio.pause();
+                }
+            } else if (isPlaying) {
+                pendingPlay = true;
+                localAudio.pause();
+                if (youtubeReady && youtubePlayer) startCurrentTrack();
+            } else {
+                pendingPlay = false;
+                isLoadingTrack = false;
+                localAudio.pause();
+                if (youtubeReady && youtubePlayer) youtubePlayer.pauseVideo();
+            }
+            
+            recordGroup.classList.toggle('is-spinning', isPlaying);
+            tonearm.classList.toggle('is-playing', isPlaying);
+            tonearm.setAttribute('aria-pressed', String(isPlaying));
+            tonearm.setAttribute('aria-label', isPlaying ? 'Pause music' : 'Play music');
+            
+            // Sync background video audio with player state
+            syncBackgroundAudio();
+            savePlayerState();
+        }
+
+        function startCurrentTrack() {
+            if (!youtubePlayer || !youtubeReady || !pendingPlay) return;
+            const track = tracks[currentTrack];
+
+            if (track && track.audioSrc) return;
+
+            const playerState = youtubePlayer.getPlayerState();
+            const currentVideoId = youtubePlayer.getVideoData().video_id;
+            if (track && track.videoId && playerState === YT.PlayerState.PAUSED && currentVideoId === track.videoId) {
+                isLoadingTrack = false;
+                youtubePlayer.playVideo();
+                return;
+            }
+            
+            // Always load and play the video immediately
+            isLoadingTrack = true;
+            if (track && track.videoId) {
+                // Load the specific video by ID for immediate playback
+                youtubePlayer.loadVideoById({
+                    videoId: track.videoId,
+                    startSeconds: restoredPlaybackPosition
+                });
+                restoredPlaybackPosition = 0;
+            } else if (activePlaylistId) {
+                youtubePlayer.loadPlaylist({ 
+                    listType: 'playlist', 
+                    list: activePlaylistId, 
+                    index: currentTrack 
+                });
+            } else {
+                isLoadingTrack = false;
+                youtubePlayer.playVideo();
+            }
+        }
+
+        tonearm.addEventListener('click', () => setPlaying(!isPlaying));
+        tonearm.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                setPlaying(!isPlaying);
+            }
+        });
+
+        progressTrack.addEventListener('click', (event) => {
+            const bounds = progressTrack.getBoundingClientRect();
+            const track = tracks[currentTrack];
+            if (track && track.audioSrc) {
+                const duration = localAudio.duration || 0;
+                localAudio.currentTime = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width)) * duration;
+                updatePlaybackProgress();
+                return;
+            }
+            if (!youtubeReady || !youtubePlayer) return;
+            const duration = youtubePlayer.getDuration();
+            youtubePlayer.seekTo(Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width)) * duration, true);
+        });
+
+        playlistPlayer.addEventListener('load', () => {
+            if (isPlaying) sendPlaylistCommand('playVideo');
+        });
+        window.onYouTubeIframeAPIReady = () => {
+            youtubePlayer = new YT.Player('playlistPlayer', {
+                width: '1',
+                height: '1',
+                playerVars: { controls: 0, autoplay: 0, playsinline: 1, rel: 0 },
+                events: {
+                    onReady: () => {
+                        youtubeReady = true;
+                        youtubePlayer.setVolume(volume);
+                        elapsedTime.textContent = '0:00';
+                        trackDuration.textContent = tracks[currentTrack].duration;
+                        progressBar.style.width = '0%';
+                        if (!restoredPlaybackState && tracks[currentTrack].videoId) {
+                            youtubePlayer.cueVideoById(tracks[currentTrack].videoId);
+                        }
+                        if (restoredPlaybackPosition > 0) youtubePlayer.seekTo(restoredPlaybackPosition, true);
+                        if (restoredPlaybackState) {
+                            pendingPlay = true;
+                            startCurrentTrack();
+                        }
+                    },
+                    onStateChange: (event) => {
+                        if (tracks[currentTrack] && tracks[currentTrack].audioSrc) return;
+                        updatePlaybackProgress();
+                        
+                        // Sync visual state with YouTube player state
+                        if (event.data === YT.PlayerState.PLAYING) {
+                            // Video started playing — clear loading flag
+                            isLoadingTrack = false;
+                            if (!isPlaying) {
+                                isPlaying = true;
+                                recordGroup.classList.add('is-spinning');
+                                tonearm.classList.add('is-playing');
+                                tonearm.setAttribute('aria-pressed', 'true');
+                                tonearm.setAttribute('aria-label', 'Pause music');
+                            }
+                        } else if (event.data === YT.PlayerState.PAUSED) {
+                            // Ignore PAUSED events that fire during track loading
+                            if (isLoadingTrack) return;
+                            if (isPlaying) {
+                                isPlaying = false;
+                                recordGroup.classList.remove('is-spinning');
+                                tonearm.classList.remove('is-playing');
+                                tonearm.setAttribute('aria-pressed', 'false');
+                                tonearm.setAttribute('aria-label', 'Play music');
+                            }
+                        } else if (event.data === YT.PlayerState.BUFFERING) {
+                            // When buffering, ensure playVideo is called immediately for fast playback
+                            if (pendingPlay && isLoadingTrack) {
+                                // Use setTimeout to call playVideo after buffer starts
+                                setTimeout(() => {
+                                    if (pendingPlay) youtubePlayer.playVideo();
+                                }, 100);
+                            }
+                        } else if (event.data === YT.PlayerState.ENDED) {
+                            isLoadingTrack = false;
+                            selectTrack(currentTrack + 1);
+                        }
+                    },
+                    onError: (event) => {
+                        console.error('YouTube player error:', event.data);
+                        // Don't automatically pause on error, let user retry
+                        // setPlaying(false);
+                    }
+                }
+            });
+        };
+        const youtubeApi = document.createElement('script');
+        youtubeApi.src = 'https://www.youtube.com/iframe_api';
+        document.head.append(youtubeApi);
+        window.setInterval(updatePlaybackProgress, 250);
+        window.setInterval(savePlayerState, 1000);
+        window.addEventListener('pagehide', savePlayerState);
+        renderAlbumCovers();
+        restorePlayerState();
+        updateActiveAlbumCard();
+        const activeTrack = tracks[currentTrack];
+        if (activeTrack) {
+            songTitle.textContent = activeTrack.title;
+            albumTitle.textContent = activeTrack.album;
+            trackDuration.textContent = activeTrack.duration;
+            nextSongName.textContent = `Next: ${tracks[(currentTrack + 1) % tracks.length].title}`;
+        }
+        updateRecordArt();
+        updateQueueHeading();
+        renderQueue();
+        updateBackground();
+        setPlaying(restoredPlaybackState);
+
+        function moveVolume(amount) {
+            volume = Math.max(0, Math.min(100, volume + amount));
+            const knobY = 395 - (volume * 0.53);
+            volumeLevel.setAttribute('y2', String(knobY));
+            volumeKnob.setAttribute('cy', String(knobY));
+            volumeControl.setAttribute('aria-valuenow', String(volume));
+            if (youtubeReady && youtubePlayer) youtubePlayer.setVolume(volume);
+        }
+
+        volumeControl.addEventListener('click', (event) => {
+            const bounds = volumeControl.getBoundingClientRect();
+            const nextVolume = Math.round((1 - ((event.clientY - bounds.top) / bounds.height)) * 100);
+            volume = Math.max(0, Math.min(100, nextVolume));
+            moveVolume(0);
+        });
+        volumeControl.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') moveVolume(-10);
+            if (event.key === 'ArrowRight' || event.key === 'ArrowUp') moveVolume(10);
+        });
+
+        function shuffleTracks() {
+            const currentTrackData = tracks[currentTrack];
+            for (let index = tracks.length - 1; index > 0; index -= 1) {
+                const randomIndex = Math.floor(Math.random() * (index + 1));
+                [tracks[index], tracks[randomIndex]] = [tracks[randomIndex], tracks[index]];
+            }
+            currentTrack = tracks.indexOf(currentTrackData);
+            renderQueue();
+            updateRecordArt();
+        }
+
+        shuffleButton.addEventListener('click', () => {
+            if (playbackMode === 0 && !shuffleActive) {
+                shuffleActive = true;
+                shuffleTracks();
+            } else {
+                playbackMode = (playbackMode + 1) % 2;
+                shuffleActive = playbackMode === 0;
+                if (shuffleActive) {
+                    shuffleTracks();
+                }
+            }
+            shuffleIcon.classList.toggle('is-hidden', playbackMode !== 0);
+            loopIcon.classList.toggle('is-hidden', playbackMode !== 1);
+            shuffleButton.classList.toggle('is-active', shuffleActive || playbackMode === 1);
+            shuffleButton.setAttribute('aria-pressed', String(shuffleActive || playbackMode === 1));
+            shuffleButton.setAttribute('aria-label', ['Shuffle tracks', 'Loop tracks'][playbackMode]);
+        });
+        previousButton.addEventListener('click', () => selectTrack(currentTrack - 1));
+        nextButton.addEventListener('click', () => selectTrack(currentTrack + 1));
+        queueButton.addEventListener('click', () => {
+            const isOpen = !queuePanel.hasAttribute('hidden');
+            queuePanel.toggleAttribute('hidden', isOpen);
+            queueButton.setAttribute('aria-expanded', String(!isOpen));
+            if (!isOpen) {
+                updateQueueHeading();
+                renderQueue();
+            }
+        });
+        
+        // Mode toggle button (cat icon)
+        const menuButton = document.querySelector('.menu-button');
+        menuButton.addEventListener('click', toggleMode);
+        
+        // Auto-cycle backgrounds every 10 seconds
+        setInterval(nextBackground, 10000);
+        
+        // Initialize background
+        updateBackground();
+    </script>
+</body>
+</html>
