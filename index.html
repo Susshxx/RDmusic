@@ -211,6 +211,8 @@
         let isLoadingTrack = false;
         let currentMode = 'cute'; // 'cute' or 'red'
         let currentBgIndex = 0;
+        const backgroundStorageKey = 'rdmusic-background-state';
+        let restoredBackgroundPosition = 0;
         
         // Background mode configurations
         const backgroundModes = {
@@ -477,34 +479,64 @@
                 const video = document.createElement('video');
                 video.autoplay = true;
                 video.loop = true;
-                video.muted = false;
-                video.defaultMuted = false;
+                video.muted = true;
+                video.defaultMuted = true;
                 video.volume = 1;
                 video.playsInline = true;
                 video.style.cssText = 'position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;';
                 video.src = bg.url;
                 video.id = 'backgroundVideo'; // Add ID for easy access
+                video.addEventListener('click', () => {
+                    video.muted = false;
+                    video.defaultMuted = false;
+                    video.play().catch(() => {});
+                });
+                video.addEventListener('loadedmetadata', () => {
+                    if (restoredBackgroundPosition > 0 && restoredBackgroundPosition < video.duration) {
+                        video.currentTime = restoredBackgroundPosition;
+                    }
+                    video.play().catch(() => {});
+                }, { once: true });
                 heroBackground.appendChild(video);
+                video.play().catch(() => {});
             }
         }
 
-        function syncBackgroundAudio() {
+        function saveBackgroundState() {
+            const backgroundVideo = document.querySelector('#backgroundVideo');
+            if (!backgroundVideo) return;
+            localStorage.setItem(backgroundStorageKey, JSON.stringify({
+                position: backgroundVideo.currentTime || 0
+            }));
+        }
+
+        function restoreBackgroundState() {
+            try {
+                const savedState = JSON.parse(localStorage.getItem(backgroundStorageKey) || 'null');
+                restoredBackgroundPosition = Math.max(0, Number(savedState?.position) || 0);
+            } catch (error) {
+                restoredBackgroundPosition = 0;
+            }
+        }
+
+        function keepBackgroundPlaying() {
             const backgroundVideo = document.querySelector('#backgroundVideo');
             if (backgroundVideo) {
-                backgroundVideo.muted = isPlaying; // Mute when player is playing, unmute when paused
+                backgroundVideo.play().catch(() => {});
             }
         }
 
-        function unlockBackgroundAudio() {
+        function unmuteBackgroundVideo() {
             const backgroundVideo = document.querySelector('#backgroundVideo');
-            if (!backgroundVideo || isPlaying) return;
+            if (!backgroundVideo) return;
             backgroundVideo.muted = false;
+            backgroundVideo.defaultMuted = false;
             backgroundVideo.volume = 1;
             backgroundVideo.play().catch(() => {});
         }
 
-        document.addEventListener('pointerdown', unlockBackgroundAudio);
-        document.addEventListener('keydown', unlockBackgroundAudio);
+        document.addEventListener('pointerdown', unmuteBackgroundVideo);
+        window.addEventListener('pagehide', saveBackgroundState);
 
         function toggleMode() {
             const prevMode = currentMode;
@@ -688,7 +720,7 @@
             tonearm.setAttribute('aria-label', isPlaying ? 'Pause music' : 'Play music');
             
             // Sync background video audio with player state
-            syncBackgroundAudio();
+            keepBackgroundPlaying();
             savePlayerState();
         }
 
@@ -834,9 +866,11 @@
         document.head.append(youtubeApi);
         window.setInterval(updatePlaybackProgress, 250);
         window.setInterval(savePlayerState, 1000);
+        window.setInterval(saveBackgroundState, 1000);
         window.addEventListener('pagehide', savePlayerState);
         renderAlbumCovers();
         restorePlayerState();
+        restoreBackgroundState();
         updateActiveAlbumCard();
         const activeTrack = tracks[currentTrack];
         if (activeTrack) {
