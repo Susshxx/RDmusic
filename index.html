@@ -306,6 +306,9 @@
         const playerStorageKey = 'rdmusic-player-state';
         let restoredPlaybackPosition = 0;
         let restoredPlaybackState = false;
+        let isRestoringPlayerState = false;
+        let playerStateReady = false;
+        let hasPendingRestoredPosition = false;
 
         function readSavedPlayerState() {
             try {
@@ -318,6 +321,8 @@
         function restorePlayerState() {
             const savedState = readSavedPlayerState();
             if (!savedState) return;
+
+            isRestoringPlayerState = true;
 
             if (savedState.album && albums[savedState.album]) currentAlbum = savedState.album;
             tracks = albums[currentAlbum].tracks;
@@ -340,6 +345,7 @@
             shuffleActive = Boolean(savedState.shuffleActive);
             restoredPlaybackPosition = Math.max(0, Number(savedState.position) || 0);
             restoredPlaybackState = Boolean(savedState.isPlaying);
+            hasPendingRestoredPosition = restoredPlaybackPosition > 0;
         }
 
         function updateActiveAlbumCard() {
@@ -352,6 +358,8 @@
         }
 
         function savePlayerState() {
+            if (isRestoringPlayerState || !playerStateReady || hasPendingRestoredPosition) return;
+
             let position = 0;
             const track = tracks[currentTrack];
             if (track && track.audioSrc) {
@@ -375,9 +383,14 @@
         localAudio.src = 'heybhagwan.mp3';
         localAudio.preload = 'metadata';
         localAudio.addEventListener('loadedmetadata', () => {
+            if (!tracks[currentTrack] || !tracks[currentTrack].audioSrc) return;
             if (restoredPlaybackPosition > 0) localAudio.currentTime = restoredPlaybackPosition;
             updatePlaybackProgress();
+            playerStateReady = true;
+            hasPendingRestoredPosition = false;
+            isRestoringPlayerState = false;
             if (restoredPlaybackState) setPlaying(true);
+            savePlayerState();
         });
         localAudio.addEventListener('timeupdate', updatePlaybackProgress);
         localAudio.addEventListener('ended', () => selectTrack(currentTrack + 1));
@@ -755,10 +768,18 @@
                             youtubePlayer.cueVideoById(tracks[currentTrack].videoId);
                         }
                         if (restoredPlaybackPosition > 0) youtubePlayer.seekTo(restoredPlaybackPosition, true);
+                        playerStateReady = true;
                         if (restoredPlaybackState) {
                             pendingPlay = true;
                             startCurrentTrack();
+                        } else if (hasPendingRestoredPosition) {
+                            window.setTimeout(() => {
+                                hasPendingRestoredPosition = false;
+                                isRestoringPlayerState = false;
+                                savePlayerState();
+                            }, 500);
                         }
+                        if (!hasPendingRestoredPosition) isRestoringPlayerState = false;
                     },
                     onStateChange: (event) => {
                         if (tracks[currentTrack] && tracks[currentTrack].audioSrc) return;
@@ -768,6 +789,8 @@
                         if (event.data === YT.PlayerState.PLAYING) {
                             // Video started playing — clear loading flag
                             isLoadingTrack = false;
+                            hasPendingRestoredPosition = false;
+                            isRestoringPlayerState = false;
                             if (!isPlaying) {
                                 isPlaying = true;
                                 recordGroup.classList.add('is-spinning');
@@ -827,6 +850,9 @@
         renderQueue();
         updateBackground();
         setPlaying(restoredPlaybackState);
+        if (!readSavedPlayerState()) {
+            playerStateReady = true;
+        }
 
         function moveVolume(amount) {
             volume = Math.max(0, Math.min(100, volume + amount));
