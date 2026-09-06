@@ -467,15 +467,13 @@
             const heroBackground = document.querySelector('.hero-background');
             const mode = backgroundModes[currentMode];
             const bg = mode.backgrounds[currentBgIndex];
-            
-            // Remove any existing video
             const existingVideo = heroBackground.querySelector('video');
-            if (existingVideo) existingVideo.remove();
             
             if (bg.type === 'image') {
                 heroBackground.style.background = `url('${bg.url}') center / cover no-repeat`;
+                if (existingVideo) existingVideo.remove();
             } else if (bg.type === 'video') {
-                heroBackground.style.background = 'transparent';
+                heroBackground.style.background = '#11141d';
                 const video = document.createElement('video');
                 video.autoplay = true;
                 video.loop = true;
@@ -496,6 +494,7 @@
                         video.currentTime = restoredBackgroundPosition;
                     }
                     video.play().catch(() => {});
+                    if (existingVideo) existingVideo.remove();
                 }, { once: true });
                 heroBackground.appendChild(video);
                 video.play().catch(() => {});
