@@ -346,7 +346,8 @@
             playbackMode = savedState.playbackMode === 1 ? 1 : 0;
             shuffleActive = Boolean(savedState.shuffleActive);
             restoredPlaybackPosition = Math.max(0, Number(savedState.position) || 0);
-            restoredPlaybackState = Boolean(savedState.isPlaying);
+            // Always start the turntable paused after a refresh or fresh open.
+            restoredPlaybackState = false;
             hasPendingRestoredPosition = restoredPlaybackPosition > 0;
         }
 
@@ -884,7 +885,7 @@
         updateQueueHeading();
         renderQueue();
         updateBackground();
-        setPlaying(restoredPlaybackState);
+        setPlaying(false);
         if (!readSavedPlayerState()) {
             playerStateReady = true;
         }
