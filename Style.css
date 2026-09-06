@@ -21,7 +21,7 @@ body {
     transition: background 0.5s ease;
 }
 
-.hero-background { position: fixed; inset: 0; z-index: -2; background: url('artist-image.jpg') center / cover; transition: background 0.5s ease; }
+.hero-background { position: fixed; z-index: -2; inset: 0; min-width: 100vw; min-height: 100dvh; overflow: hidden; background: #17181d url('artist-image.jpg') center / cover; transition: background 0.5s ease; }
 .site-header { position: relative; z-index: 5; display: flex; align-items: center; padding: 26px 36px; transform: translateY(-10px); }
 .logo-placeholder { display: block; width: 60px; height: 76px; text-decoration: none; }.logo-placeholder img { display: block; width: 60px; height: 76px; object-fit: contain; }
 .site-header nav { display: flex; gap: 24px; margin-left: auto; margin-right: 10px; }.site-header nav a { color: #140d13; font-size: 18px; text-decoration: none; }.site-header nav a:hover { color: #fff; }

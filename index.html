@@ -339,7 +339,7 @@
             playbackMode = savedState.playbackMode === 1 ? 1 : 0;
             shuffleActive = Boolean(savedState.shuffleActive);
             restoredPlaybackPosition = Math.max(0, Number(savedState.position) || 0);
-            restoredPlaybackState = Boolean(savedState.isPlaying);
+            restoredPlaybackState = false;
         }
 
         function updateActiveAlbumCard() {
@@ -460,13 +460,13 @@
             if (bg.type === 'image') {
                 heroBackground.style.background = `url('${bg.url}') center / cover no-repeat`;
             } else if (bg.type === 'video') {
-                heroBackground.style.background = 'transparent';
+                heroBackground.style.background = '#17181d';
                 const video = document.createElement('video');
                 video.autoplay = true;
                 video.loop = true;
                 video.muted = isPlaying; // Mute if player is playing, unmute if paused
                 video.playsInline = true;
-                video.style.cssText = 'position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;';
+                video.style.cssText = 'position: absolute; inset: 0; width: 100vw; height: 100vh; min-width: 100%; min-height: 100%; object-fit: cover; z-index: -1;';
                 video.src = bg.url;
                 video.id = 'backgroundVideo'; // Add ID for easy access
                 heroBackground.appendChild(video);
