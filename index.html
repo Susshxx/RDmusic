@@ -537,7 +537,21 @@
             backgroundVideo.play().catch(() => {});
         }
 
+        function resumePlaybackAfterVisibilityChange() {
+            keepBackgroundPlaying();
+            if (!isPlaying) return;
+
+            const track = tracks[currentTrack];
+            if (track && track.audioSrc) {
+                localAudio.play().catch(() => {});
+            } else if (youtubeReady && youtubePlayer) {
+                youtubePlayer.playVideo();
+            }
+        }
+
         document.addEventListener('pointerdown', unmuteBackgroundVideo);
+        document.addEventListener('visibilitychange', resumePlaybackAfterVisibilityChange);
+        window.addEventListener('focus', resumePlaybackAfterVisibilityChange);
         window.addEventListener('pagehide', saveBackgroundState);
 
         function toggleMode() {
