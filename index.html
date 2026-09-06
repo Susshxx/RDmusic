@@ -485,6 +485,7 @@
                 video.src = bg.url;
                 video.id = 'backgroundVideo'; // Add ID for easy access
                 video.addEventListener('click', () => {
+                    if (isPlaying) return;
                     video.muted = false;
                     video.defaultMuted = false;
                     video.play().catch(() => {});
@@ -521,13 +522,14 @@
         function keepBackgroundPlaying() {
             const backgroundVideo = document.querySelector('#backgroundVideo');
             if (backgroundVideo) {
+                backgroundVideo.muted = isPlaying;
                 backgroundVideo.play().catch(() => {});
             }
         }
 
         function unmuteBackgroundVideo() {
             const backgroundVideo = document.querySelector('#backgroundVideo');
-            if (!backgroundVideo) return;
+            if (!backgroundVideo || isPlaying) return;
             backgroundVideo.muted = false;
             backgroundVideo.defaultMuted = false;
             backgroundVideo.volume = 1;
