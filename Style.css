@@ -16,12 +16,12 @@ body {
     color: var(--ink);
     font-family: Georgia, 'Times New Roman', serif;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     background: var(--hero-pink);
     transition: background 0.5s ease;
 }
 
-.hero-background { position: fixed; z-index: -2; inset: 0; min-width: 100vw; min-height: 100dvh; overflow: hidden; background: #17181d url('artist-image.jpg') center / cover; transition: background 0.5s ease; }
+.hero-background { position: fixed; z-index: -2; inset: 0; width: 100vw; height: 100vh; min-width: 100vw; min-height: 100svh; overflow: hidden; background: #17181d url('artist-image.jpg') center / cover; transition: background 0.5s ease; }
 .site-header { position: relative; z-index: 5; display: flex; align-items: center; padding: 26px 36px; transform: translateY(-10px); }
 .logo-placeholder { display: block; width: 60px; height: 76px; text-decoration: none; }.logo-placeholder img { display: block; width: 60px; height: 76px; object-fit: contain; }
 .site-header nav { display: flex; gap: 24px; margin-left: auto; margin-right: 10px; }.site-header nav a { color: #140d13; font-size: 18px; text-decoration: none; }.site-header nav a:hover { color: #fff; }
@@ -145,9 +145,9 @@ input[type='range'] { width: 104px; accent-color: var(--mint-dark); cursor: poin
     .album-cover::before { inset: 8px; }
     .album-cover small { font-size: 7px; }
     .album-disc { top: 10px; right: 0; width: 85px; height: 75px; }
-    .social-rail { top: auto; right: 8px; bottom: calc(204px + env(safe-area-inset-bottom)); gap: 3px; width: 28px; }
-    .social-rail a { width: 28px; height: 28px; }
-    .social-rail a svg { width: 15px; height: 15px; }
+    .social-rail { top: auto; right: 8px; bottom: calc(210px + env(safe-area-inset-bottom)); gap: 6px; width: 38px; }
+    .social-rail a { width: 38px; height: 38px; }
+    .social-rail a svg { width: 20px; height: 20px; }
     .player-shell { right: auto; bottom: max(12px, env(safe-area-inset-bottom)); left: 12px; align-items: center; width: calc(100vw - 24px); transform: none; }
     .turntable-player { width: 260px; flex: 0 0 260px; margin-right: -15px; margin-bottom: 0; margin-left:-20px; }
     .turntable-card { width: calc(100% - 215px); height: 90px; margin: 0 0 0 -15px; margin-bottom: -10px; padding: 0; border-radius: 8px; }
