@@ -487,6 +487,16 @@
             recordArt.setAttribute('xlink:href', thumbnail);
         }
 
+        function playBackgroundVideo(video) {
+            const playAttempt = video.play();
+            if (!playAttempt) return;
+            playAttempt.catch(() => {
+                video.muted = true;
+                video.defaultMuted = true;
+                video.play().catch(() => {});
+            });
+        }
+
         function updateBackground() {
             const heroBackground = document.querySelector('.hero-background');
             const mode = backgroundModes[currentMode];
@@ -513,17 +523,21 @@
                     if (isPlaying) return;
                     video.muted = false;
                     video.defaultMuted = false;
-                    video.play().catch(() => {});
+                    playBackgroundVideo(video);
+                });
+                video.addEventListener('pause', () => {
+                    if (!video.ended) playBackgroundVideo(video);
                 });
                 video.addEventListener('loadedmetadata', () => {
                     if (restoredBackgroundPosition > 0 && restoredBackgroundPosition < video.duration) {
                         video.currentTime = restoredBackgroundPosition;
                     }
-                    video.play().catch(() => {});
+                    playBackgroundVideo(video);
                     if (existingVideo) existingVideo.remove();
                 }, { once: true });
+                video.addEventListener('canplay', () => playBackgroundVideo(video), { once: true });
                 heroBackground.appendChild(video);
-                video.play().catch(() => {});
+                playBackgroundVideo(video);
             }
         }
 
@@ -548,7 +562,7 @@
             const backgroundVideo = document.querySelector('#backgroundVideo');
             if (backgroundVideo) {
                 backgroundVideo.muted = isPlaying || !backgroundMusicEnabled;
-                backgroundVideo.play().catch(() => {});
+                playBackgroundVideo(backgroundVideo);
             }
         }
 
@@ -558,7 +572,7 @@
             backgroundVideo.muted = false;
             backgroundVideo.defaultMuted = false;
             backgroundVideo.volume = 1;
-            backgroundVideo.play().catch(() => {});
+            playBackgroundVideo(backgroundVideo);
         }
 
         function updateBackgroundMusicButton() {
@@ -578,7 +592,7 @@
             if (backgroundVideo) {
                 backgroundVideo.muted = isPlaying || !backgroundMusicEnabled;
                 backgroundVideo.defaultMuted = backgroundVideo.muted;
-                backgroundVideo.play().catch(() => {});
+                playBackgroundVideo(backgroundVideo);
             }
             updateBackgroundMusicButton();
         });
