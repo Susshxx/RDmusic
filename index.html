@@ -49,6 +49,10 @@
         </div>
     </aside>
     <aside class="social-rail" aria-label="Social links">
+        <button class="background-music-button" id="backgroundMusicButton" type="button" aria-label="Mute background music" aria-pressed="true" title="Mute background music">
+            <svg class="volume-on-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z" /><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" /></svg>
+            <svg class="volume-off-icon is-hidden" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z" /><path d="m17 9 4 6m0-6-4 6" /></svg>
+        </button>
         <a href="https://www.youtube.com/@rachana_dahal" target="_blank" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z" /></svg></a>
         <a href="https://www.instagram.com/rachana_dahal" target="_blank" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" class="social-dot" /></svg></a>
         <a href="https://www.tiktok.com/@rachana_meow" target="_blank" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.7 3c.3 1.8 1.4 3.1 3.3 3.5v3.1c-1.4 0-2.6-.4-3.7-1.1v6.4a5.5 5.5 0 1 1-4.8-5.4v3.2a2.4 2.4 0 1 0 1.7 2.3V3h3.5Z" /></svg></a>
@@ -143,7 +147,7 @@
         <section class="turntable-card" aria-label="Now playing">
             <div class="now-playing">
                 <div class="song-copy">
-                    <p>Aagya</p>
+                    <p>Hey Bhagwan</p>
                     <span>Rachana Dahal</span>
                 </div>
                 <button class="queue-icon" id="queueButton" type="button" aria-label="Show current album tracks" aria-expanded="false">≡♪</button>
@@ -152,7 +156,7 @@
                     <div class="progress" id="progressTrack" role="slider" aria-label="Seek through song" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progressBar"></i></div>
                     <span id="trackDuration">5:15</span>
                 </div>
-                <p class="next-song" id="nextSongName">Next: Hey Bhagwan</p>
+                <p class="next-song" id="nextSongName">Next: Aagya</p>
             </div>
         </section>
     </main>
@@ -254,8 +258,8 @@
                 coverImage: 'https://yt3.googleusercontent.com/MGusxm1g3h3wUu471D7LrVrEXKrCz-Dj2BLWFYvnI5UIaotSV_SGWMfoWRNRCF8C7Tidt0Alsw=s1200',
                 playlistUrl: 'https://music.youtube.com/playlist?list=PLEVgEF2Rs05LA08AezbLyPyJBNnL46Kae',
                 tracks: [
-                    { title: 'Aagya', album: 'Janmadaag', duration: '5:16', videoId: 'FuWIaNfat58' },
                     { title: 'Hey Bhagwan', album: 'Janmadaag', duration: '4:51', audioSrc: 'heybhagwan.mp3' , videoId:'wnBak_wnmNw'},
+                    { title: 'Aagya', album: 'Janmadaag', duration: '5:16', videoId: 'FuWIaNfat58' },
                     { title: 'Timi Bhaye', album: 'Janmadaag', duration: '4:22', videoId: '9UoFPfU_KL8' },
                     { title: 'Asambhav', album: 'Janmadaag', duration: '5:10', videoId: 'iess5HIlNSg' },
                     { title: 'Ma Sakdina', album: 'Janmadaag', duration: '6:02', videoId: 'C7cobsauddQ' },
@@ -321,6 +325,7 @@
         let playlistLoaded = false;
         let activePlaylistId = 'PLOe7AuU6KbNE';
         let volume = 68;
+        let backgroundMusicEnabled = true;
         let playbackMode = 0;
         let shuffleActive = false;
         const playerStorageKey = 'rdmusic-player-state';
@@ -542,19 +547,41 @@
         function keepBackgroundPlaying() {
             const backgroundVideo = document.querySelector('#backgroundVideo');
             if (backgroundVideo) {
-                backgroundVideo.muted = isPlaying;
+                backgroundVideo.muted = isPlaying || !backgroundMusicEnabled;
                 backgroundVideo.play().catch(() => {});
             }
         }
 
         function unmuteBackgroundVideo() {
             const backgroundVideo = document.querySelector('#backgroundVideo');
-            if (!backgroundVideo || isPlaying) return;
+            if (!backgroundVideo || isPlaying || backgroundMusicEnabled) return;
             backgroundVideo.muted = false;
             backgroundVideo.defaultMuted = false;
             backgroundVideo.volume = 1;
             backgroundVideo.play().catch(() => {});
         }
+
+        function updateBackgroundMusicButton() {
+            const button = document.querySelector('#backgroundMusicButton');
+            if (!button) return;
+            const isMuted = !backgroundMusicEnabled;
+            button.setAttribute('aria-label', isMuted ? 'Enable background music' : 'Mute background music');
+            button.setAttribute('title', isMuted ? 'Enable background music' : 'Mute background music');
+            button.setAttribute('aria-pressed', String(!isMuted));
+            button.querySelector('.volume-on-icon').classList.toggle('is-hidden', isMuted);
+            button.querySelector('.volume-off-icon').classList.toggle('is-hidden', !isMuted);
+        }
+
+        document.querySelector('#backgroundMusicButton').addEventListener('click', () => {
+            backgroundMusicEnabled = !backgroundMusicEnabled;
+            const backgroundVideo = document.querySelector('#backgroundVideo');
+            if (backgroundVideo) {
+                backgroundVideo.muted = isPlaying || !backgroundMusicEnabled;
+                backgroundVideo.defaultMuted = backgroundVideo.muted;
+                backgroundVideo.play().catch(() => {});
+            }
+            updateBackgroundMusicButton();
+        });
 
         function resumePlaybackAfterVisibilityChange() {
             keepBackgroundPlaying();
@@ -658,9 +685,27 @@
         }
 
         // Drag and drop functionality
+        function loadDroppedAlbum(albumId) {
+            if (!albumId || !albums[albumId]) return;
+
+            loadAlbum(albumId);
+            recordGroup.classList.remove('is-landing');
+            void recordGroup.offsetWidth;
+            recordGroup.classList.add('is-landing');
+            albumDiscs.forEach(disc => disc.classList.remove('is-loaded'));
+            albumCards.forEach(card => {
+                const isActive = card.dataset.album === albumId;
+                card.classList.toggle('active-album', isActive);
+                if (isActive) card.querySelector('.album-disc').classList.add('is-loaded');
+            });
+            recordGroup.addEventListener('animationend', () => recordGroup.classList.remove('is-landing'), { once: true });
+        }
+
         albumDiscs.forEach(disc => {
+            const card = disc.closest('.album-card');
+            let pointerDrag = null;
+
             disc.addEventListener('dragstart', (e) => {
-                const card = disc.closest('.album-card');
                 const dragGhost = document.createElement('span');
                 dragGhost.className = 'drag-ghost';
                 dragGhost.innerHTML = '<span></span>';
@@ -675,6 +720,50 @@
             disc.addEventListener('dragend', () => {
                 disc.classList.remove('dragging');
             });
+
+            card.addEventListener('pointerdown', (e) => {
+                if (e.pointerType === 'mouse' || !e.isPrimary) return;
+                pointerDrag = { id: e.pointerId, startX: e.clientX, startY: e.clientY, active: false };
+                card.setPointerCapture(e.pointerId);
+            });
+
+            card.addEventListener('pointermove', (e) => {
+                if (!pointerDrag || pointerDrag.id !== e.pointerId) return;
+                const distance = Math.hypot(e.clientX - pointerDrag.startX, e.clientY - pointerDrag.startY);
+                if (!pointerDrag.active && distance < 8) return;
+
+                e.preventDefault();
+                if (!pointerDrag.active) {
+                    pointerDrag.ghost = document.createElement('span');
+                    pointerDrag.ghost.className = 'drag-ghost';
+                    pointerDrag.ghost.innerHTML = '<span></span>';
+                    document.body.append(pointerDrag.ghost);
+                }
+                pointerDrag.active = true;
+                disc.classList.add('dragging');
+                pointerDrag.ghost.style.left = `${e.clientX}px`;
+                pointerDrag.ghost.style.top = `${e.clientY}px`;
+                const bounds = turntableDropZone.getBoundingClientRect();
+                const overDropZone = e.clientX >= bounds.left && e.clientX <= bounds.right && e.clientY >= bounds.top && e.clientY <= bounds.bottom;
+                turntableDropZone.classList.toggle('drag-over', overDropZone);
+            });
+
+            const finishPointerDrag = (e) => {
+                if (!pointerDrag || pointerDrag.id !== e.pointerId) return;
+                const dragState = pointerDrag;
+                const wasDragging = dragState.active;
+                pointerDrag = null;
+                card.releasePointerCapture(e.pointerId);
+                disc.classList.remove('dragging');
+                if (dragState.ghost) dragState.ghost.remove();
+                const bounds = turntableDropZone.getBoundingClientRect();
+                const overDropZone = e.clientX >= bounds.left && e.clientX <= bounds.right && e.clientY >= bounds.top && e.clientY <= bounds.bottom;
+                turntableDropZone.classList.remove('drag-over');
+                if (wasDragging && overDropZone) loadDroppedAlbum(card.dataset.album);
+            };
+
+            card.addEventListener('pointerup', finishPointerDrag);
+            card.addEventListener('pointercancel', finishPointerDrag);
         });
 
         turntableDropZone.addEventListener('dragover', (e) => {
@@ -690,20 +779,7 @@
             e.preventDefault();
             turntableDropZone.classList.remove('drag-over');
             
-            const albumId = e.dataTransfer.getData('text/plain');
-            if (albumId && albums[albumId]) {
-                loadAlbum(albumId);
-                recordGroup.classList.remove('is-landing');
-                void recordGroup.offsetWidth;
-                recordGroup.classList.add('is-landing');
-                albumDiscs.forEach(disc => disc.classList.remove('is-loaded'));
-                albumCards.forEach(card => {
-                    const isActive = card.dataset.album === albumId;
-                    card.classList.toggle('active-album', isActive);
-                    if (isActive) card.querySelector('.album-disc').classList.add('is-loaded');
-                });
-                recordGroup.addEventListener('animationend', () => recordGroup.classList.remove('is-landing'), { once: true });
-            }
+            loadDroppedAlbum(e.dataTransfer.getData('text/plain'));
         });
 
         function selectTrack(index) {
@@ -918,6 +994,7 @@
         updateQueueHeading();
         renderQueue();
         updateBackground();
+        updateBackgroundMusicButton();
         setPlaying(false);
         if (!readSavedPlayerState()) {
             playerStateReady = true;
